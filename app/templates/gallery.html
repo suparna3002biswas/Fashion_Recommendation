@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Images</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Ensure full viewport height and scrollability */
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent double scrollbar */
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh; 
+            background: linear-gradient(90deg, white, #ffdab9, #ff91a4);
+            overflow-y: auto;   /* Enable vertical scrolling */
+            padding: 20px;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .image-card {
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+            max-width: 300px;
+            text-align: center;
+            background: white;
+        }
+
+        .image-card:hover {
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .image-container img {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            transition: 0.3s;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.05);
+        }
+
+        .image-info {
+            padding: 15px;
+        }
+
+        .delete-btn {
+            background: #ff4564;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #ff3344;
+        }
+
+        /* Add space between the links */
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px; /* Adds space between the two links */
+            margin-top: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #ff4564;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: white;
+            transition: 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-links a:hover {
+            color: #ff3344;
+            background: #ffdab9;
+            text-decoration: underline;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="gallery">
+        <h1 style="width: 100%; text-align: center;">My Uploaded Images</h1>
+
+        {% if images %}
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 20px;">
+            {% for image in images %}
+            <div class="image-card">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='uploads/' + image.username + '/' + image.filename) }}" 
+                         alt="User Image">
+                </div>
+                <div class="image-info">
+                    <p><strong>Name:</strong> {{ image.filename }}</p>
+                    <p><strong>Uploaded:</strong> {{ image.upload_time.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                    
+                    <form action="{{ url_for('delete_image', image_id=image.id) }}" method="POST">
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <p>No images uploaded yet.</p>
+        {% endif %}
+
+        <!-- Add space between the links -->
+        <div class="nav-links">
+            <a href="{{ url_for('upload_image') }}">Back to Upload</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
