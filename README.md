@@ -6,3 +6,5 @@ We are using 3 CNN models: i) DenseNet201
                           iii) Xception
 
 Then we are doing sof voting ensemble with these 3 models and it recommends the correct occasion and similar images from uploaded user image.
+
+Here, we have made a dataset with real time images used it in our project.
