@@ -14,6 +14,9 @@ from datetime import datetime, timedelta
 from difflib import get_close_matches
 import random
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
 @st.cache_data
 def load_color_data():
     df = pd.read_csv("/content/drive/MyDrive/topwear_images.csv")
